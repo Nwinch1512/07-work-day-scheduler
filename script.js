@@ -1,5 +1,6 @@
 let timeDisplayEl = $("#currentDay");
 let hourNineEl = $("textarea#hour-9");
+let timeBlockContainer = $(".container");
 // let timeBlocks = [];
 // timeBlocks["9am"] = "";
 // timeBlocks["10am"] = "";
@@ -17,7 +18,10 @@ let timeBlocks = {
   "4pm": "",
   "5pm": "",
 };
+
+let timeBlocksKeys = Object.keys(timeBlocks);
 console.log(timeBlocks);
+console.log(timeBlocksKeys);
 // Displays day
 function displayDay() {
   let today = moment().format("dddd, MMMM Do");
@@ -37,11 +41,35 @@ function checkCurrentHour() {
 let currentHour = setInterval(checkCurrentHour, 1000);
 console.log(currentHour);
 
-$each(timeBlocks, function (timeBlockIndex, timeBlockValue) {
-  let timeBlockDiv = $("<div></div>");
-  $("timeBlockDiv").$(".container").append(timeBlockDiv);
+//Set up div for each timeblock
+$.each(timeBlocks, function (key, value) {
+  let timeBlockDiv = $("<div>");
+  timeBlockDiv.addClass("row time-block");
+  timeBlockDiv.attr("timeBlock", key);
+  let hourDiv = $("<div>");
+  hourDiv.text(key);
+  hourDiv.addClass("col-md-1 hour");
+  let textEntry = $("<textarea>");
+  textEntry.addClass("col-md-10 description");
+  let timeBlockBtn = $("<button>");
+  timeBlockBtn.addClass("btn saveBtn col-md-1");
+  timeBlockBtn.attr("timeBlock", key);
+  let btnIcon = $("<icon>");
+  btnIcon.addClass("fas fa-save");
+
+  //add value to timeBlock Array and to the div - determined by user input
+  //   if(timeBlockIndex = )
+  timeBlockBtn.append(btnIcon);
+  timeBlockDiv.append(hourDiv);
+  timeBlockDiv.append(textEntry);
+  timeBlockDiv.append(timeBlockBtn);
+  timeBlockContainer.append(timeBlockDiv);
 });
 
+// Add click event listener to each button so that entry is stored
+$(".saveBtn").on("click", function (event) {
+  //Set up local storgage in here to save data when button is clicked.  The timeBlocksSaveBtn will be created using when looping over the TimeBlocks object.
+});
 // Your Task
 // Create a simple calendar application that allows a user to save events for each hour of the day by modifying starter code. This app will run in the browser and feature dynamically updated HTML and CSS powered by jQuery.
 
