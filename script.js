@@ -7,21 +7,21 @@ let timeBlockContainer = $(".container");
 // timeBlocks["11am"] = "";
 // timeBlocks["12am"] = "tes";
 
-let timeBlocks = {
-  "9am": "",
-  "10am": "",
-  "11am": "",
-  "12pm": "",
-  "1pm": "",
-  "2pm": "",
-  "3pm": "",
-  "4pm": "",
-  "5pm": "",
-};
+// let timeBlocks = {
+//   "9am": "",
+//   "10am": "",
+//   "11am": "",
+//   "12pm": "",
+//   "1pm": "",
+//   "2pm": "",
+//   "3pm": "",
+//   "4pm": "",
+//   "5pm": "",
+// };
 
-let timeBlocksKeys = Object.keys(timeBlocks);
-console.log(timeBlocks);
-console.log(timeBlocksKeys);
+// let timeBlocksKeys = Object.keys(timeBlocks);
+// console.log(timeBlocks);
+// console.log(timeBlocksKeys);
 // Displays day
 function displayDay() {
   let today = moment().format("dddd, MMMM Do");
@@ -43,7 +43,7 @@ function checkCurrentHour() {
 let currentHour = setInterval(checkCurrentHour, 1000);
 
 //Set up div for each timeblock
-$.each(timeBlocks, function (key, value) {
+$.each(getCalendarEntries(), function (key, value) {
   let timeBlockDiv = $("<div>");
   timeBlockDiv.addClass("row time-block");
   timeBlockDiv.attr("timeBlock", key);
@@ -52,6 +52,7 @@ $.each(timeBlocks, function (key, value) {
   hourDiv.addClass("col-md-1 hour");
   let textAreaEl = $("<textarea>");
   textAreaEl.addClass("col-md-10 description");
+  textAreaEl.text(value);
   let timeBlockBtn = $("<button>");
   timeBlockBtn.addClass("btn saveBtn col-md-1");
   timeBlockBtn.attr("timeBlock", key);
@@ -91,10 +92,22 @@ function saveBtnClick(event) {
   console.log(btnClicked);
 
   let timeBlockDiv = btnClicked.parent();
+  let timeBlockAttr = timeBlockDiv.attr("timeBlock");
   console.log(timeBlockDiv);
+  console.log(timeBlockAttr);
   let textAreaEl = timeBlockDiv.children().eq(1);
   console.log(textAreaEl);
-  console.log(textAreaEl.val());
+  let calendarEntryText = textAreaEl.val();
+  console.log(calendarEntryText);
+
+  setCalendarEntry(timeBlockAttr, calendarEntryText);
+
+  //Get correct time key from attribute
+  //timeBlocks[timeBlockAttr] = calendarEntryText;
+  //console.log(timeBlocks);
+  //let xxx = $(this).parent().attr("timeBlock");
+  //console.log(xxx);
+  //Save to local storage
 
   //How can I access the textarea div outside prev code block?
   // let calendarEntry = textAreaEl.val();
@@ -118,20 +131,30 @@ function saveBtnClick(event) {
 //   }
 // });
 
-function getCalendarEntry() {
+function getCalendarEntries() {
   let storedCalendarEntries = JSON.parse(
     localStorage.getItem("calendarArrayKey")
   );
   if (storedCalendarEntries) {
     return storedCalendarEntries;
   } else {
-    return [];
+    return {
+      "9am": "",
+      "10am": "",
+      "11am": "",
+      "12pm": "",
+      "1pm": "",
+      "2pm": "",
+      "3pm": "",
+      "4pm": "",
+      "5pm": "",
+    };
   }
 }
 
-function addCalendarEntry(key, calendarEntry) {
-  let storedCalendarEntries = getCalendarEntry();
-  storedCalendarEntries.push({ key, calendarEntry });
+function setCalendarEntry(key, calendarEntry) {
+  let storedCalendarEntries = getCalendarEntries();
+  storedCalendarEntries[key] = calendarEntry;
   localStorage.setItem(
     "calendarArrayKey",
     JSON.stringify(storedCalendarEntries)
