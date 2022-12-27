@@ -32,14 +32,15 @@ function displayDay() {
 setInterval(displayDay, 1000);
 
 // Displays currentHour
+// Figure out how to take just the first digit to enable me to compare hour with timeblock div key and then add formatting accordingly
 function checkCurrentHour() {
-  let currentHour = moment().format("LT");
+  // let currentHour = moment().format("LT");
+  let currentHour = moment().format("h");
   console.log(currentHour);
 }
 
 //Checks time every second
 let currentHour = setInterval(checkCurrentHour, 1000);
-console.log(currentHour);
 
 //Set up div for each timeblock
 $.each(timeBlocks, function (key, value) {
@@ -49,8 +50,8 @@ $.each(timeBlocks, function (key, value) {
   let hourDiv = $("<div>");
   hourDiv.text(key);
   hourDiv.addClass("col-md-1 hour");
-  let textEntry = $("<textarea>");
-  textEntry.addClass("col-md-10 description");
+  let textAreaEl = $("<textarea>");
+  textAreaEl.addClass("col-md-10 description");
   let timeBlockBtn = $("<button>");
   timeBlockBtn.addClass("btn saveBtn col-md-1");
   timeBlockBtn.attr("timeBlock", key);
@@ -61,15 +62,82 @@ $.each(timeBlocks, function (key, value) {
   //   if(timeBlockIndex = )
   timeBlockBtn.append(btnIcon);
   timeBlockDiv.append(hourDiv);
-  timeBlockDiv.append(textEntry);
+  timeBlockDiv.append(textAreaEl);
   timeBlockDiv.append(timeBlockBtn);
   timeBlockContainer.append(timeBlockDiv);
+  // Add click event listener to each button so that entry is stored
+  timeBlockBtn.on("click", saveBtnClick);
+
+  // $(".saveBtn").on("click", function (event) {
+  //   let btnClicked = $(event.target);
+  //   console.log(btnClicked);
+  //   //How can I access the textarea div outside prev code block?
+  //   let calendarEntry = textAreaEl.val();
+  //   console.log(event.target);
+  //   if (calendarEntry === "") {
+  //     return;
+  //   } else {
+  //     addCalendarEntry(key, calendarEntry);
+  //   }
+
+  // btnClicked.parent("div").append();
+
+  //Set up local storgage in here to save data when button is clicked.  The timeBlocksSaveBtn will be created using when looping over the TimeBlocks object.
+  // });
 });
 
-// Add click event listener to each button so that entry is stored
-$(".saveBtn").on("click", function (event) {
-  //Set up local storgage in here to save data when button is clicked.  The timeBlocksSaveBtn will be created using when looping over the TimeBlocks object.
-});
+function saveBtnClick(event) {
+  let btnClicked = $(event.target);
+  console.log(btnClicked);
+
+  let timeBlockDiv = btnClicked.parent();
+  console.log(timeBlockDiv);
+  let textAreaEl = timeBlockDiv.children().eq(1);
+  console.log(textAreaEl);
+  console.log(textAreaEl.val());
+
+  //How can I access the textarea div outside prev code block?
+  // let calendarEntry = textAreaEl.val();
+  // console.log(event.target);
+  // if (calendarEntry === "") {
+  //   return;
+  // } else {
+  //   addCalendarEntry(key, calendarEntry);
+  // }
+}
+
+// $(".saveBtn").on("click", function (event) {
+//   let btnClicked = $(event.target);
+//   console.log(btnClicked);
+//   let calendarEntry = textAreaEl.val();
+//   console.log(event.target);
+//   if (calendarEntry === "") {
+//     return;
+//   } else {
+//     addCalendarEntry(key, calendarEntry);
+//   }
+// });
+
+function getCalendarEntry() {
+  let storedCalendarEntries = JSON.parse(
+    localStorage.getItem("calendarArrayKey")
+  );
+  if (storedCalendarEntries) {
+    return storedCalendarEntries;
+  } else {
+    return [];
+  }
+}
+
+function addCalendarEntry(key, calendarEntry) {
+  let storedCalendarEntries = getCalendarEntry();
+  storedCalendarEntries.push({ key, calendarEntry });
+  localStorage.setItem(
+    "calendarArrayKey",
+    JSON.stringify(storedCalendarEntries)
+  );
+}
+
 // Your Task
 // Create a simple calendar application that allows a user to save events for each hour of the day by modifying starter code. This app will run in the browser and feature dynamically updated HTML and CSS powered by jQuery.
 
