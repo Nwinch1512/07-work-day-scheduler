@@ -1,11 +1,6 @@
 let timeDisplayEl = $("#currentDay");
 let hourNineEl = $("textarea#hour-9");
 let timeBlockContainer = $(".container");
-// let timeBlocks = [];
-// timeBlocks["9am"] = "";
-// timeBlocks["10am"] = "";
-// timeBlocks["11am"] = "";
-// timeBlocks["12am"] = "tes";
 
 // let timeBlocks = {
 //   "9am": "",
@@ -19,9 +14,6 @@ let timeBlockContainer = $(".container");
 //   "5pm": "",
 // };
 
-// let timeBlocksKeys = Object.keys(timeBlocks);
-// console.log(timeBlocks);
-// console.log(timeBlocksKeys);
 // Displays day
 function displayDay() {
   let today = moment().format("dddd, MMMM Do");
@@ -32,15 +24,12 @@ function displayDay() {
 setInterval(displayDay, 1000);
 
 // Displays currentHour
-// Figure out how to take just the first digit to enable me to compare hour with timeblock div key and then add formatting accordingly
 function checkCurrentHour() {
-  // let currentHour = moment().format("LT");
-  let currentHour = moment().format("h");
-  console.log(currentHour);
+  return moment().format("ha");
 }
 
 //Checks time every second
-let currentHour = setInterval(checkCurrentHour, 1000);
+// let currentHour = setInterval(checkCurrentHour, 1000);
 
 //Set up div for each timeblock
 $.each(getCalendarEntries(), function (key, value) {
@@ -49,6 +38,9 @@ $.each(getCalendarEntries(), function (key, value) {
   timeBlockDiv.attr("timeBlock", key);
   let hourDiv = $("<div>");
   hourDiv.text(key);
+  let currentHour = checkCurrentHour();
+  console.log(currentHour);
+  // if(key===currentHour);
   hourDiv.addClass("col-md-1 hour");
   let textAreaEl = $("<textarea>");
   textAreaEl.addClass("col-md-10 description");
@@ -68,23 +60,6 @@ $.each(getCalendarEntries(), function (key, value) {
   timeBlockContainer.append(timeBlockDiv);
   // Add click event listener to each button so that entry is stored
   timeBlockBtn.on("click", saveBtnClick);
-
-  // $(".saveBtn").on("click", function (event) {
-  //   let btnClicked = $(event.target);
-  //   console.log(btnClicked);
-  //   //How can I access the textarea div outside prev code block?
-  //   let calendarEntry = textAreaEl.val();
-  //   console.log(event.target);
-  //   if (calendarEntry === "") {
-  //     return;
-  //   } else {
-  //     addCalendarEntry(key, calendarEntry);
-  //   }
-
-  // btnClicked.parent("div").append();
-
-  //Set up local storgage in here to save data when button is clicked.  The timeBlocksSaveBtn will be created using when looping over the TimeBlocks object.
-  // });
 });
 
 function saveBtnClick(event) {
@@ -101,35 +76,7 @@ function saveBtnClick(event) {
   console.log(calendarEntryText);
 
   setCalendarEntry(timeBlockAttr, calendarEntryText);
-
-  //Get correct time key from attribute
-  //timeBlocks[timeBlockAttr] = calendarEntryText;
-  //console.log(timeBlocks);
-  //let xxx = $(this).parent().attr("timeBlock");
-  //console.log(xxx);
-  //Save to local storage
-
-  //How can I access the textarea div outside prev code block?
-  // let calendarEntry = textAreaEl.val();
-  // console.log(event.target);
-  // if (calendarEntry === "") {
-  //   return;
-  // } else {
-  //   addCalendarEntry(key, calendarEntry);
-  // }
 }
-
-// $(".saveBtn").on("click", function (event) {
-//   let btnClicked = $(event.target);
-//   console.log(btnClicked);
-//   let calendarEntry = textAreaEl.val();
-//   console.log(event.target);
-//   if (calendarEntry === "") {
-//     return;
-//   } else {
-//     addCalendarEntry(key, calendarEntry);
-//   }
-// });
 
 function getCalendarEntries() {
   let storedCalendarEntries = JSON.parse(
@@ -177,7 +124,7 @@ function setCalendarEntry(key, calendarEntry) {
 // DONE
 
 // Present timeblocks for standard business hours when the user scrolls down.
-
+//DONE
 // Color-code each timeblock based on past, present, and future when the timeblock is viewed.
 // set variable for current time using moment js
 // if (moment js = time box) add class of present
@@ -185,9 +132,9 @@ function setCalendarEntry(key, calendarEntry) {
 // if (moment js < time box) add class of past
 
 // Allow a user to enter an event when they click a timeblock
-
+// DONE
 // Save the event in local storage when the save button is clicked in that timeblock.
-
+// DONE
 // Persist events between refreshes of a page
-
+// DONE
 // The following animation demonstrates the application functionality:
