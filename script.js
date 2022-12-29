@@ -22,17 +22,14 @@ function checkCurrentHour() {
 
 //Set up div for each timeblock
 $.each(getCalendarEntries(), function (key, value) {
+  let formattedKey = moment(key, "HH").format("ha");
+  let currentHour = parseInt(checkCurrentHour());
+  let keyAsInt = parseInt(key);
   let timeBlockDiv = $("<div>");
   timeBlockDiv.addClass("row time-block");
   timeBlockDiv.attr("timeBlock", key);
   let hourDiv = $("<div>");
-  hourDiv.text(key);
-  let currentHour = parseInt(checkCurrentHour());
-  let keyAsInt = parseInt(key);
-
-  console.log(currentHour, typeof currentHour);
-  console.log(keyAsInt, typeof keyAsInt);
-
+  hourDiv.text(formattedKey);
   hourDiv.addClass("col-md-1 hour");
   let textAreaEl = $("<textarea>");
   textAreaEl.addClass("col-md-10 description");
