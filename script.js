@@ -2,18 +2,6 @@ let timeDisplayEl = $("#currentDay");
 let hourNineEl = $("textarea#hour-9");
 let timeBlockContainer = $(".container");
 
-// let timeBlocks = {
-//   "9am": "",
-//   "10am": "",
-//   "11am": "",
-//   "12pm": "",
-//   "1pm": "",
-//   "2pm": "",
-//   "3pm": "",
-//   "4pm": "",
-//   "5pm": "",
-// };
-
 // Displays day
 function displayDay() {
   let today = moment().format("dddd, MMMM Do");
@@ -40,10 +28,26 @@ $.each(getCalendarEntries(), function (key, value) {
   hourDiv.text(key);
   let currentHour = checkCurrentHour();
   console.log(currentHour);
-  // if(key===currentHour);
+  console.log(key);
+
+  // if (key < currentHour) {
+  //   console.log("past");
+  // }
+  // if (key > currentHour) {
+  //   console.log("future");
+  // }
   hourDiv.addClass("col-md-1 hour");
   let textAreaEl = $("<textarea>");
   textAreaEl.addClass("col-md-10 description");
+  if (key === currentHour) {
+    textAreaEl.addClass("present");
+  }
+  if (key < currentHour) {
+    textAreaEl.addClass("past");
+  }
+  if (key > currentHour) {
+    textAreaEl.addClass("future");
+  }
   textAreaEl.text(value);
   let timeBlockBtn = $("<button>");
   timeBlockBtn.addClass("btn saveBtn col-md-1");
