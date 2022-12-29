@@ -13,7 +13,8 @@ setInterval(displayDay, 1000);
 
 // Displays currentHour
 function checkCurrentHour() {
-  return moment().format("ha");
+  // return moment().format("ha");
+  return moment().format("HH");
 }
 
 //Checks time every second
@@ -26,28 +27,26 @@ $.each(getCalendarEntries(), function (key, value) {
   timeBlockDiv.attr("timeBlock", key);
   let hourDiv = $("<div>");
   hourDiv.text(key);
-  let currentHour = checkCurrentHour();
-  console.log(currentHour);
-  console.log(key);
+  let currentHour = parseInt(checkCurrentHour());
+  let keyAsInt = parseInt(key);
 
-  // if (key < currentHour) {
-  //   console.log("past");
-  // }
-  // if (key > currentHour) {
-  //   console.log("future");
-  // }
+  console.log(currentHour, typeof currentHour);
+  console.log(keyAsInt, typeof keyAsInt);
+
   hourDiv.addClass("col-md-1 hour");
   let textAreaEl = $("<textarea>");
   textAreaEl.addClass("col-md-10 description");
-  if (key === currentHour) {
-    textAreaEl.addClass("present");
-  }
-  if (key < currentHour) {
+
+  if (keyAsInt < currentHour) {
     textAreaEl.addClass("past");
   }
-  if (key > currentHour) {
+  if (keyAsInt > currentHour) {
     textAreaEl.addClass("future");
   }
+  if (keyAsInt === currentHour) {
+    textAreaEl.addClass("present");
+  }
+
   textAreaEl.text(value);
   let timeBlockBtn = $("<button>");
   timeBlockBtn.addClass("btn saveBtn col-md-1");
@@ -84,21 +83,21 @@ function saveBtnClick(event) {
 
 function getCalendarEntries() {
   let storedCalendarEntries = JSON.parse(
-    localStorage.getItem("calendarArrayKey")
+    localStorage.getItem("calendarItemsKey")
   );
   if (storedCalendarEntries) {
     return storedCalendarEntries;
   } else {
     return {
-      "9am": "",
-      "10am": "",
-      "11am": "",
-      "12pm": "",
-      "1pm": "",
-      "2pm": "",
-      "3pm": "",
-      "4pm": "",
-      "5pm": "",
+      9: "",
+      10: "",
+      11: "",
+      12: "",
+      13: "",
+      14: "",
+      15: "",
+      16: "",
+      17: "",
     };
   }
 }
@@ -107,7 +106,7 @@ function setCalendarEntry(key, calendarEntry) {
   let storedCalendarEntries = getCalendarEntries();
   storedCalendarEntries[key] = calendarEntry;
   localStorage.setItem(
-    "calendarArrayKey",
+    "calendarItemsKey",
     JSON.stringify(storedCalendarEntries)
   );
 }
